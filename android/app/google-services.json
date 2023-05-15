@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "18045745008",
+    "project_id": "alzcare-740c1",
+    "storage_bucket": "alzcare-740c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18045745008:android:fa9e9538144a86540741b5",
+        "android_client_info": {
+          "package_name": "com.example.alzcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18045745008-rgp32jvg7p9hgg3a4torghri1kl18vhd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ6_I_jb2q-SFo3znkm3ZPxM9gsGlmbts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18045745008-rgp32jvg7p9hgg3a4torghri1kl18vhd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

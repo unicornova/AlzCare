@@ -1,0 +1,4 @@
+Mild
+Moderate
+Non
+Very mild
