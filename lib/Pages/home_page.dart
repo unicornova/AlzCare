@@ -1,3 +1,4 @@
+import 'package:alzcare/Pages/rating.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ import 'my_drawer_header.dart';
 import 'dashboard.dart';
 import 'detection.dart';
 import 'know_alz.dart';
+import 'rating.dart';
 
 
 
@@ -33,10 +35,12 @@ class _HomePageState extends State<HomePage> {
       container = Home();
     } else if (currentPage == DrawerSections.know_alzheimer) {
       container = KnowAlzPage();
+    }else if (currentPage == DrawerSections.rating) {
+      container = RatingPage();
     }
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 160, 108, 170),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
 
       body: container,
@@ -69,6 +73,8 @@ Widget MyDrawerList() {
               currentPage == DrawerSections.detect_alzheimer ? true : false),
           menuItem(3, "Know Alzheimer", Icons.event,
               currentPage == DrawerSections.know_alzheimer ? true : false),
+          menuItem(4, "Rate this App", Icons.star,
+              currentPage == DrawerSections.know_alzheimer ? true : false),
         ],
       )
     );
@@ -87,6 +93,9 @@ Widget menuItem(int id, String title, IconData icon, bool selected){
               currentPage = DrawerSections.detect_alzheimer;
             } else if (id == 3) {
               currentPage = DrawerSections.know_alzheimer;
+            }
+            else if (id == 4) {
+              currentPage = DrawerSections.rating;
             }
           },); 
           },
@@ -123,4 +132,5 @@ enum DrawerSections{
   detect_alzheimer,
   // ignore: constant_identifier_names
   know_alzheimer,
+  rating,
 }

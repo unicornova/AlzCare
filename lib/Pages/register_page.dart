@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../components/button.dart';
 import '../components/textfield.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -147,22 +145,22 @@ class _RegisterPageState extends State<RegisterPage> {
           
           const SizedBox(height: 50),
           
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Row(
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                const Expanded(
+                Expanded(
                   child: Divider(
                    thickness: 1.5,
                    color: Colors.black12,
                   ),
                 ),
           
-                const Text('Or Continue With',
+                Text('Or Continue With',
                 style: TextStyle(color: Colors.black54,fontSize: 16),),
           
-                const Expanded(
+                Expanded(
                   child:  Divider(
                    thickness: 1.5,
                    color:  Colors.black12,
