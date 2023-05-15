@@ -7,6 +7,8 @@ import 'dashboard.dart';
 import 'detection.dart';
 import 'know_alz.dart';
 
+
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

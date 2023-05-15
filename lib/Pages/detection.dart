@@ -1,10 +1,9 @@
-import 'dart:math';
+
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
-
-import '../main.dart';
+List <CameraDescription>? cameras;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -25,7 +24,8 @@ class _HomeState extends State<Home> {
     loadmodel();
   }
 
-  loadCamera(){
+  loadCamera()async{
+    cameras = await availableCameras();
     cameraController = CameraController(cameras![0], ResolutionPreset.medium);
     cameraController!.initialize().then((value){
       if(!mounted){
@@ -74,8 +74,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Alzheimer Stages Detection')),
+      //appBar: AppBar(
+        //title: Text('Alzheimer Stages Detection')),
       body: Column(children: [
         Padding(padding: EdgeInsets.all(20),
         child: Container(

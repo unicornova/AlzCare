@@ -1,12 +1,10 @@
 import 'package:alzcare/Pages/auth_page.dart';
-import 'package:alzcare/Pages/auth_page2.dart';
-import 'package:alzcare/Pages/login_page.dart';
 import 'package:alzcare/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
-List <CameraDescription>? cameras;
+
+//List <CameraDescription>? cameras;
 
 /*void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +15,7 @@ List <CameraDescription>? cameras;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
+ // cameras = await availableCameras();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
