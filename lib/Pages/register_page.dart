@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import '../components/textfield.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
   const RegisterPage({super.key,required this.showLoginPage});
@@ -12,6 +14,48 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+   String url = "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json";
+
+  var _countries = [];
+  var _states = [];
+  var _cities = [];
+
+
+  DateTime _dateTime= DateTime.now();
+
+// these will be the values after selection of the item
+  String? country;
+  String? city;
+  String? state;
+
+// this will help to show the widget after 
+  bool isCountrySelected = false;
+  bool isStateSelected = false;
+
+  //http get request to get data from the link
+  Future getWorldData()async{
+    var response = await http.get(Uri.parse(url));
+    if(response.statusCode == 200){
+    var jsonResponse = convert.jsonDecode(response.body);
+
+    setState(() {
+      _countries = jsonResponse;
+    });
+      
+
+      print(_countries);
+    }
+  }
+
+  @override
+  void initState() {
+
+      getWorldData();
+    
+    super.initState();
+  }
+
 
   final confirmPasswordController = TextEditingController();
   final emailController = TextEditingController();
@@ -52,6 +96,20 @@ class _RegisterPageState extends State<RegisterPage> {
     return true;
   }
   else {return false;}
+ }
+
+ void _showDatePicker()
+ {
+  showDatePicker(
+    context: context,
+    initialDate: DateTime.now(), 
+    firstDate: DateTime(1600), 
+    lastDate: DateTime(3000)
+    ).then((value){
+      setState(() {
+        _dateTime=value!;
+      });
+    } );
  }
 
   @override
@@ -110,10 +168,36 @@ class _RegisterPageState extends State<RegisterPage> {
              hintText: 'Confirm Password',
              obscureText: true,
            ),
+
+          const SizedBox(height: 10),
+          Text(
+             //_dateTime.toString(),
+             'Birthdate: '+DateFormat.yMMMEd().format(_dateTime),
+             style: TextStyle(
+               color: Colors.grey[800],
+               fontSize: 15
+             ),
+             
+            ),
+           const SizedBox(height: 10),
+
+           Container(
+            width: 325,
+            height: 45,
+             child: MaterialButton(
+              onPressed: (){
+                _showDatePicker();
+              },
+               color: const Color.fromARGB(255, 203, 121, 218).withOpacity(0.5),
+              child: const Padding(
+                padding: EdgeInsets.all(14.0),
+                child: Text('Choose Birthdate'),
+              ),
+             
+             ),
+           ),
           
-           const SizedBox(height: 15),
-          
-           Padding(
+           /*Padding(
              padding: const EdgeInsets.symmetric(horizontal: 30.0),
              child: Row(
                mainAxisAlignment: MainAxisAlignment.end,
@@ -123,14 +207,129 @@ class _RegisterPageState extends State<RegisterPage> {
                    style: TextStyle(color: Colors.grey[700]),),
                ],
              ),
-           ),
+           ),*/
           
-           const SizedBox(height: 20),
+           const SizedBox(height: 10),
           
           //Button(
            //onTap: signUpUser,
           //),
 
+          if (_countries.isEmpty) const Center(child: CircularProgressIndicator()) else 
+          Container(
+            width: 332,
+            height: 55,
+            child: Card(
+              color: Color.fromARGB(255, 218, 160, 228).withOpacity(0.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: DropdownButton<String>(
+                underline: Container(),
+                  hint: Text("Select Country"),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  isDense: true,
+                  isExpanded: true,
+                  items: _countries.map((ctry){
+                  return DropdownMenuItem<String>(
+                    value: ctry["name"],
+                    child: Text(ctry["name"])
+                    );
+                }).toList(), 
+                 value: country,
+                onChanged: (value){
+                    setState(() {
+                     _states = [];
+                     country = value!;
+                     for(int i =0; i<_countries.length; i++){
+                      if(_countries[i]["name"] == value){
+                        _states = _countries[i]["states"];
+                      }
+                     }
+                      isCountrySelected = true;
+                    });
+                }),
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
+//======================================= State
+          if(isCountrySelected)
+            Container(
+            width: 332,
+            height: 55,
+              child: Card(
+                 color:  Color.fromARGB(255, 218, 160, 228).withOpacity(0.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                child: Container(
+              
+                   padding: const EdgeInsets.all(10.0),
+                  child: DropdownButton<String>(
+                  underline: Container(),      
+                  hint: Text("Select State"),
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  isDense: true,
+                  isExpanded: true,
+                  items: _states.map((st){
+                  return DropdownMenuItem<String>(
+                    value: st["name"],
+                    child: Text(st["name"])
+                    );
+                        }).toList(), 
+                         value: state,
+                        onChanged: (value){
+                    setState(() {
+                   
+                     _cities = [];
+                   state = value!;
+                   for(int i =0; i<_states.length; i++){
+                    if(_states[i]["name"] == value){
+                      _cities = _states[i]["cities"];
+                    }
+                   }
+                    isStateSelected = true;
+                    });
+                        }),
+                ),
+              ),
+            ) else Container(),
+
+
+        //=============================== City
+/*if(isStateSelected)
+            Card(
+              color:  Colors.purple.withOpacity(0.5),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                child: DropdownButton<String>(
+                underline: Container(),
+                hint: Text("Select City"),
+                icon: const Icon(Icons.keyboard_arrow_down),
+                isDense: true,
+                isExpanded: true,
+                items: _cities.map((ct){
+                return DropdownMenuItem<String>(
+                  value: ct["name"],
+                  child: Text(ct["name"])
+                  );
+                      }).toList(), 
+                       value: city,
+                      onChanged: (value){
+                  setState(() {
+                 
+                
+                 city = value!;
+              
+                  });
+                      }),
+              ),
+            ) 
+            
+            else Container(),*/
+
+          
+          const SizedBox(height: 10),
           GestureDetector(
            onTap: signUpUser,
            child: Container(
@@ -143,9 +342,9 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         ), 
           
-          const SizedBox(height: 50),
+         // const SizedBox(height: 50),
           
-          const Padding(
+          /*const Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Row(
               // ignore: prefer_const_literals_to_create_immutables
@@ -177,7 +376,7 @@ class _RegisterPageState extends State<RegisterPage> {
            children:[
            SvgPicture.asset('assets/google.svg',height: 70)
           
-           ]),
+           ]),*/
 
            const SizedBox(height: 35),
 

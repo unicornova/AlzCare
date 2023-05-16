@@ -8,6 +8,7 @@ import 'dashboard.dart';
 import 'detection.dart';
 import 'know_alz.dart';
 import 'rating.dart';
+import 'map_page.dart';
 
 
 
@@ -21,7 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var currentPage = DrawerSections.dashboard;
 
-  void signOutUser(){
+   signOutUser(){
     FirebaseAuth.instance.signOut();
   }
 
@@ -37,6 +38,10 @@ class _HomePageState extends State<HomePage> {
       container = KnowAlzPage();
     }else if (currentPage == DrawerSections.rating) {
       container = RatingPage();
+    }else if (currentPage == DrawerSections.map) {
+      container = MapPage();
+    }else if (currentPage == DrawerSections.signout) {
+      container = signOutUser();
     }
 
     return Scaffold(
@@ -75,6 +80,10 @@ Widget MyDrawerList() {
               currentPage == DrawerSections.know_alzheimer ? true : false),
           menuItem(4, "Rate this App", Icons.star,
               currentPage == DrawerSections.know_alzheimer ? true : false),
+          menuItem(5, "Map", Icons.map,
+              currentPage == DrawerSections.map ? true : false),
+          menuItem(6, "Logout", Icons.logout,
+              currentPage == DrawerSections.signout ? true : false),
         ],
       )
     );
@@ -96,6 +105,10 @@ Widget menuItem(int id, String title, IconData icon, bool selected){
             }
             else if (id == 4) {
               currentPage = DrawerSections.rating;
+            } else if (id == 5) {
+              currentPage = DrawerSections.map;
+            }else if (id == 6) {
+              currentPage = DrawerSections.signout;
             }
           },); 
           },
@@ -133,4 +146,6 @@ enum DrawerSections{
   // ignore: constant_identifier_names
   know_alzheimer,
   rating,
+  map,
+  signout
 }

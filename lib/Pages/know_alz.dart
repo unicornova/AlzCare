@@ -41,9 +41,10 @@ void dispose(){
   YoutubePlayerBuilder(
     player: YoutubePlayer(controller: controller), 
     builder: (context,player)=>Scaffold(
-      body: ListView(children: [
-        player
-      ]),
+      body: Center(
+        child: Column(
+          children: [player],)    
+      ),
     )
     );
 }
