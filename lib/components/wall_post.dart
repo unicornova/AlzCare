@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'comment.dart';
+import 'dislike_button.dart';
 
 
 class WallPost extends StatefulWidget {
@@ -15,6 +16,7 @@ class WallPost extends StatefulWidget {
   final String postID;
   final String time;
   final List<String> likes;
+  final List<String> dislikes;
 
   const WallPost({
     super.key,
@@ -22,16 +24,20 @@ class WallPost extends StatefulWidget {
     required this.user,
     required this. postID,
     required this.likes,
-    required this.time
+    required this.dislikes,
+    required this.time,
     });
 
   @override
   State<WallPost> createState() => _WallPostState();
 }
 
-class _WallPostState extends State<WallPost> {
+ class _WallPostState extends State<WallPost> {
+
    final user = FirebaseAuth.instance.currentUser!;
+
    bool isLiked=false;
+   bool isdisLiked=false;
 
    final _commentTextController = TextEditingController();
 
@@ -39,11 +45,20 @@ class _WallPostState extends State<WallPost> {
   void initState() {
     super.initState();
     isLiked = widget.likes.contains(user.email);
+    isdisLiked = widget.dislikes.contains(user.email);
   }
+
+  
 
   void toggleLike(){
     setState(() {
       isLiked=!isLiked;
+    });
+    }
+
+  void toggledisLike(){
+    setState(() {
+      isdisLiked=!isdisLiked;
     });
 
     DocumentReference postRef = FirebaseFirestore.instance.collection('user posts').doc(widget.postID);
@@ -57,6 +72,18 @@ class _WallPostState extends State<WallPost> {
     else{
       postRef.update({
         'Likes': FieldValue.arrayRemove([user.email])
+      });
+    }
+
+    if(isdisLiked)
+    {
+      postRef.update({
+        'disLikes': FieldValue.arrayUnion([user.email])
+      });
+    }
+    else{
+      postRef.update({
+        'disLikes': FieldValue.arrayRemove([user.email])
       });
     }
   }
@@ -113,6 +140,7 @@ class _WallPostState extends State<WallPost> {
 
 
 
+  // ignore: unused_element
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -155,6 +183,19 @@ class _WallPostState extends State<WallPost> {
                   ),
                   const SizedBox(height: 5),
                   Text(widget.likes.length.toString(),
+                  style: TextStyle(color: Color.fromARGB(255, 117, 116, 116)),),
+
+            ]),
+            const SizedBox(width: 10),
+
+            Column(
+                children: [
+                  disLikeButton(
+                    isdisLiked: isdisLiked
+                  , onTap: toggledisLike
+                  ),
+                  const SizedBox(height: 5),
+                  Text(widget.dislikes.length.toString(),
                   style: TextStyle(color: Color.fromARGB(255, 117, 116, 116)),),
 
             ]),
@@ -218,4 +259,7 @@ class _WallPostState extends State<WallPost> {
 
     );
   }
-}
+  }
+  
+  
+ 

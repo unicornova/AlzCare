@@ -29,6 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
         'Message': textController.text,
         'TimeStamp': Timestamp.now(),
         'Likes':[],
+        'disLikes':[],
       });
       setState(() {
         textController.clear();
@@ -65,6 +66,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     user:post['UserEmail'], 
                     postID: post.id,
                     likes: List<String>.from(post['Likes'] ?? []),
+                    dislikes: List<String>.from(post['disLikes'] ?? []),
                     time: formatDate(post['TimeStamp']),
                    );
 
