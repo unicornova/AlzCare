@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
+
+
 //List <CameraDescription>? cameras;
 
 /*void main() async{
@@ -38,5 +40,6 @@ class _MyAppState extends State<MyApp> {
       home:AuthPage(),
     );
   }
+
 }
 

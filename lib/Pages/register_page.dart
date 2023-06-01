@@ -215,7 +215,9 @@ class _RegisterPageState extends State<RegisterPage> {
            //onTap: signUpUser,
           //),
 
-          if (_countries.isEmpty) const Center(child: CircularProgressIndicator()) else 
+          if (_countries.isEmpty) 
+          const Center(child: CircularProgressIndicator()) 
+          else 
           Container(
             width: 332,
             height: 55,

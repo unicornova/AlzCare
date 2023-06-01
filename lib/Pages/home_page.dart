@@ -7,7 +7,7 @@ import 'my_drawer_header.dart';
 import 'dashboard.dart';
 import 'detection.dart';
 import 'know_alz.dart';
-import 'rating.dart';
+
 import 'map_page.dart';
 
 
@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var currentPage = DrawerSections.dashboard;
 
-   signOutUser(){
+  signOutUser(){
     FirebaseAuth.instance.signOut();
   }
 
@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
 
