@@ -1,15 +1,19 @@
 
 import 'package:alzcare/components/comment_button.dart';
 import 'package:alzcare/components/like_button.dart';
+import 'package:alzcare/helper/helper_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'comment.dart';
 
 
 class WallPost extends StatefulWidget {
   final String message;
   final String user;
   final String postID;
+  final String time;
   final List<String> likes;
 
   const WallPost({
@@ -18,6 +22,7 @@ class WallPost extends StatefulWidget {
     required this.user,
     required this. postID,
     required this.likes,
+    required this.time
     });
 
   @override
@@ -66,7 +71,7 @@ class _WallPostState extends State<WallPost> {
   }
 
 
- DateTime date = DateTime.now();
+ //DateTime date = DateTime.now();
   //show dialog for comment
 
   void showCommentDialog(){
@@ -112,7 +117,7 @@ class _WallPostState extends State<WallPost> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8)),
       margin: EdgeInsets.only(top: 25,left: 25,right: 25),
       padding: EdgeInsets.all(25),
@@ -124,14 +129,19 @@ class _WallPostState extends State<WallPost> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.user,
-              style: TextStyle(color: Colors.grey[500]),),
-              const SizedBox(height: 10,),
+              Row(
+              children: [
+                Text(widget.user,style: TextStyle(color: Colors.grey[500]),),
+                Text(' . ',style: TextStyle(color: Colors.grey[500]),),
+                Text(widget.time,style: TextStyle(color: Colors.grey[500]),),
+              ],
+            ),
+              const SizedBox(height: 5,),
               Text(widget.message),
             ],
           ),
 
-          const SizedBox(width: 20,),
+          const SizedBox(height: 20,),
           
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -148,7 +158,7 @@ class _WallPostState extends State<WallPost> {
                   style: TextStyle(color: Color.fromARGB(255, 117, 116, 116)),),
 
             ]),
-            const SizedBox(height: 5),
+            const SizedBox(width: 10),
                 
 
            Column(
@@ -165,17 +175,16 @@ class _WallPostState extends State<WallPost> {
                 ],
         
               ),
-            ],
-          ),
-          
+           
+          const SizedBox(height: 10),
 
         //comments
-       /* StreamBuilder<QuerySnapshot>(
+       StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore
           .instance
           .collection('user posts')
           .doc(widget.postID)
-          .collection('Comments')
+          .collection('comments')
           .orderBy('CommentTime',descending: true)
           .snapshots(),
           builder: (context,snapshot){
@@ -195,15 +204,17 @@ class _WallPostState extends State<WallPost> {
               return Comment(
                 text: commentData['CommentText'],
                 user: commentData['CommentedBy'],
-                time: DateFormat.yMMMEd().format(date),
+                time: formatDate(commentData['CommentTime']),
               );
 
             }).toList(),
           );
 
-          }),,
+          })
         
-*/
+
+      ],
+          ),
 
     );
   }

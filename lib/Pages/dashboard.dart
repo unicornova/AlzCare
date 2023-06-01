@@ -1,4 +1,5 @@
 import 'package:alzcare/components/wall_post.dart';
+import 'package:alzcare/helper/helper_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     user:post['UserEmail'], 
                     postID: post.id,
                     likes: List<String>.from(post['Likes'] ?? []),
+                    time: formatDate(post['TimeStamp']),
                    );
 
               });
