@@ -53,17 +53,46 @@ class WallPost extends StatefulWidget {
   void toggleLike(){
     setState(() {
       isLiked=!isLiked;
+
+      if(isLiked){
+          isdisLiked= false;
+      }
     });
+
+   DocumentReference postRef = FirebaseFirestore.instance.collection('user posts').doc(widget.postID);
+
+   if (isLiked) {
+  postRef.update({
+    'Likes': FieldValue.arrayUnion([user.email]),
+    'disLikes': FieldValue.arrayRemove([user.email])
+  });
+} 
+else if (isdisLiked) {
+  postRef.update({
+    'Likes': FieldValue.arrayRemove([user.email]),
+    'disLikes': FieldValue.arrayUnion([user.email])
+  });
+} else {
+  postRef.update({
+    'Likes': FieldValue.arrayRemove([user.email]),
+    'disLikes': FieldValue.arrayRemove([user.email])
+  });
+}
+
     }
 
   void toggledisLike(){
     setState(() {
       isdisLiked=!isdisLiked;
+
+      if(isdisLiked){
+          isLiked= false;
+      }
     });
 
     DocumentReference postRef = FirebaseFirestore.instance.collection('user posts').doc(widget.postID);
 
-    if(isLiked)
+    /*if(isLiked)
     {
       postRef.update({
         'Likes': FieldValue.arrayUnion([user.email])
@@ -74,20 +103,38 @@ class WallPost extends StatefulWidget {
         'Likes': FieldValue.arrayRemove([user.email])
       });
     }
-
-    if(isdisLiked)
+     if(isdisLiked)
     {
       postRef.update({
         'disLikes': FieldValue.arrayUnion([user.email])
       });
     }
+    
     else{
       postRef.update({
         'disLikes': FieldValue.arrayRemove([user.email])
       });
-    }
-  }
+    */
+  
 
+if (isLiked) {
+  postRef.update({
+    'Likes': FieldValue.arrayUnion([user.email]),
+    'disLikes': FieldValue.arrayRemove([user.email])
+  });
+} 
+else if (isdisLiked) {
+  postRef.update({
+    'Likes': FieldValue.arrayRemove([user.email]),
+    'disLikes': FieldValue.arrayUnion([user.email])
+  });
+} else {
+  postRef.update({
+    'Likes': FieldValue.arrayRemove([user.email]),
+    'disLikes': FieldValue.arrayRemove([user.email])
+  });
+}
+ }
   // add a comment
   void addComment(String commentText){
     FirebaseFirestore.instance.collection('user posts').doc(widget.postID).collection('comments').add({
@@ -96,7 +143,7 @@ class WallPost extends StatefulWidget {
       'CommentTime': Timestamp.now(),
     });
   }
-
+  
 
  //DateTime date = DateTime.now();
   //show dialog for comment
