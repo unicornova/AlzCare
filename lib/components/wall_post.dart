@@ -90,32 +90,7 @@ else if (isdisLiked) {
       }
     });
 
-    DocumentReference postRef = FirebaseFirestore.instance.collection('user posts').doc(widget.postID);
-
-    /*if(isLiked)
-    {
-      postRef.update({
-        'Likes': FieldValue.arrayUnion([user.email])
-      });
-    }
-    else{
-      postRef.update({
-        'Likes': FieldValue.arrayRemove([user.email])
-      });
-    }
-     if(isdisLiked)
-    {
-      postRef.update({
-        'disLikes': FieldValue.arrayUnion([user.email])
-      });
-    }
-    
-    else{
-      postRef.update({
-        'disLikes': FieldValue.arrayRemove([user.email])
-      });
-    */
-  
+    DocumentReference postRef = FirebaseFirestore.instance.collection('user posts').doc(widget.postID); 
 
 if (isLiked) {
   postRef.update({
@@ -145,7 +120,6 @@ else if (isdisLiked) {
   }
   
 
- //DateTime date = DateTime.now();
   //show dialog for comment
 
   void showCommentDialog(){
@@ -254,7 +228,7 @@ else if (isdisLiked) {
                 CommentButton(
                         onTap: showCommentDialog),
                         const SizedBox(height: 5),
-                     const Text('0',
+                     const Text('Comment',
                      style: TextStyle(
                     color: Color.fromARGB(255, 117, 116, 116)),),
                     ],
