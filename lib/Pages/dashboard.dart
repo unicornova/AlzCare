@@ -147,7 +147,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Text('Logged in as ${currentUser.email}'),
-            SizedBox(height: 50),
+            SizedBox(height: 40),
           ],
         ),
       ),
