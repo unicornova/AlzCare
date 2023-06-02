@@ -11,6 +11,8 @@ class RatingPage extends StatefulWidget {
 class _RatingPageState extends State<RatingPage> {
   double rating =0;
 
+  
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Center(child: Column(
