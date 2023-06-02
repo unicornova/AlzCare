@@ -1,4 +1,5 @@
-import 'package:alzcare/components/textfield.dart';
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,9 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String url =
       "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json";
 
@@ -25,6 +29,7 @@ class _UserProfileState extends State<UserProfile> {
   String? country;
   String? city;
   String? state;
+  String? phoneNumber;
 
   // This will help to show the widget after selection
   bool isCountrySelected = false;
@@ -40,7 +45,7 @@ class _UserProfileState extends State<UserProfile> {
         _countries = jsonResponse;
       });
 
-      print(_countries);
+      //print(_countries);
     }
   }
 
@@ -52,6 +57,7 @@ class _UserProfileState extends State<UserProfile> {
 
   final currentuser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   DateTime _dateTime = DateTime.now();
   bool isUsernameTaken = false;
 
@@ -72,6 +78,11 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<void> saveUserDetails() async {
     final username = textController.text;
+    final phoneNumber = phoneNumberController.text;
+
+    setState(() {
+    this.phoneNumber = phoneNumber;
+  });
 
     // Check if the username already exists
     final QuerySnapshot existingUsernames = await FirebaseFirestore.instance
@@ -85,12 +96,13 @@ class _UserProfileState extends State<UserProfile> {
 
       // Create a new document in the "user details" collection
       await FirebaseFirestore.instance.collection('user details').doc(uid).set({
-        'username': username,
-        'birthdate': _dateTime,
-        'country': country,
-        'state': state,
-        'city': city,
-      });
+      'username': username,
+      'birthdate': _dateTime,
+      'country': country,
+      'state': state,
+      'city': city,
+      'phoneNumber': phoneNumber, // Assign the phoneNumber value correctly
+    });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('User details saved')),
@@ -173,15 +185,15 @@ class _UserProfileState extends State<UserProfile> {
               padding: EdgeInsets.only(left: 33.0),
               child: Text(
                 'Username is already taken',
-                style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
+                style: TextStyle(color: Color.fromARGB(255, 206, 56, 45),fontWeight: FontWeight.bold),
               ),
             ),
-          if(!isUsernameTaken)
+          if(!isUsernameTaken&&textController.text.trim().isNotEmpty)
           const Padding(
               padding: EdgeInsets.only(left: 33.0),
               child: Text(
                 'Username is available',
-                style: TextStyle(color: Color.fromARGB(255, 3, 173, 40),fontWeight: FontWeight.bold),
+                style: TextStyle(color: Color.fromARGB(255, 5, 156, 37),fontWeight: FontWeight.bold),
               ),
             ),
           
@@ -345,12 +357,53 @@ class _UserProfileState extends State<UserProfile> {
           else
             Container(),
 
+             const SizedBox(height: 10),
+
+           Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 30.0),
+             child: Form(
+              key: _formKey,
+               child: TextFormField(
+                       controller:phoneNumberController, 
+                       obscureText: false,
+                       keyboardType: TextInputType.phone,
+                       onChanged: (value) {
+                         _formKey.currentState?.validate();
+                       },
+                       validator: (value) {
+                         if(value!.isEmpty){
+                          return '';
+                         }
+                         else if(!RegExp(r'^\+880\d{10}$').hasMatch(value))
+                         {
+                           return 'Please enter a valid Phone Number';
+                         }
+                         
+                           return null;
+                         
+                       },
+                       decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade200)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade600)
+                      ),
+                      fillColor: Colors.blueGrey.shade100,
+                      filled: true,
+                      hintText: 'Provide Phone Number (Optional)',
+                      hintStyle: TextStyle(color: Colors.grey[600])
+                    ),
+                       ),
+             ),
+           ),
+
             const SizedBox(height: 10),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 120.0),
             child: MaterialButton(
-              onPressed: isUsernameTaken ? null : saveUserDetails,
+              onPressed: isUsernameTaken ? null : () async {await saveUserDetails();},
               color: Color.fromARGB(255, 140, 206, 142),
               child: const Padding(
                 padding: EdgeInsets.all(14.0),

@@ -14,11 +14,12 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   
-
+  
 
   final confirmPasswordController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  
 
  Future signUpUser() async{
   showDialog
@@ -116,12 +117,9 @@ class _RegisterPageState extends State<RegisterPage> {
              obscureText: true,
            ),
 
-  
-          
            const SizedBox(height: 10),
-          
-      
 
+           
           
 
           
