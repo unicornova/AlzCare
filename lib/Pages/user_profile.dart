@@ -53,6 +53,7 @@ class _UserProfileState extends State<UserProfile> {
   final currentuser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
   DateTime _dateTime = DateTime.now();
+  bool isUsernameTaken = false;
 
   void _showDatePicker() {
     showDatePicker(
@@ -70,20 +71,31 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<void> saveUserDetails() async {
-    final uid = currentuser.uid;
+    final username = textController.text;
 
-    // Create a new document in the "user details" collection
-    await FirebaseFirestore.instance.collection('user details').doc(uid).set({
-      'username': textController.text,
-      'birthdate': _dateTime,
-      'country': country,
-      'state': state,
-      'city': city,
-    });
+    // Check if the username already exists
+    final QuerySnapshot existingUsernames = await FirebaseFirestore.instance
+        .collection('user details')
+        .where('username', isEqualTo: username)
+        .limit(1)
+        .get();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('User details saved')),
-    );
+    if (!existingUsernames.docs.isNotEmpty) {
+      final uid = currentuser.uid;
+
+      // Create a new document in the "user details" collection
+      await FirebaseFirestore.instance.collection('user details').doc(uid).set({
+        'username': username,
+        'birthdate': _dateTime,
+        'country': country,
+        'state': state,
+        'city': city,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User details saved')),
+      );
+    }
   }
 
   @override
@@ -106,7 +118,9 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ),
           const SizedBox(height: 10),
-          Padding(
+
+
+          const Padding(
             padding: EdgeInsets.only(left: 33.0),
             child: Text(
               'Username',
@@ -114,14 +128,67 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ),
           const SizedBox(height: 10),
-          MyTextField(
-            controller: textController,
-            hintText: 'Type a username',
-            obscureText: false,
-          ),
+
+
+
+         Padding(
+           padding:  const EdgeInsets.symmetric(horizontal: 30.0),
+           child: TextField(
+           controller: textController,
+           decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade200)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade600)
+                    ),
+                    fillColor: Colors.blueGrey.shade100,
+                    filled: true,
+                    hintText: 'Type a username',
+                    hintStyle: TextStyle(color: Colors.grey[600])
+           ),
+           onChanged: (value) async {
+             final username = value.trim();
+         
+             // Check if the username is already taken
+             final QuerySnapshot existingUsernames = await FirebaseFirestore.instance
+                 .collection('user details')
+                 .where('username', isEqualTo: username)
+                 .limit(1)
+                 .get();
+         
+             setState(() {
+               isUsernameTaken = existingUsernames.docs.isNotEmpty;
+             });
+           },
+         ),
+         ),
+
+
+      const SizedBox(height: 10),
+
+
+         if (isUsernameTaken)
+            const Padding(
+              padding: EdgeInsets.only(left: 33.0),
+              child: Text(
+                'Username is already taken',
+                style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
+              ),
+            ),
+          if(!isUsernameTaken)
+          const Padding(
+              padding: EdgeInsets.only(left: 33.0),
+              child: Text(
+                'Username is available',
+                style: TextStyle(color: Color.fromARGB(255, 3, 173, 40),fontWeight: FontWeight.bold),
+              ),
+            ),
+          
           const SizedBox(height: 10),
+
           Padding(
-            padding: EdgeInsets.only(left: 33.0),
+            padding: const EdgeInsets.only(left: 33.0),
             child: Text(
               'Birthdate: ' + DateFormat.yMMMEd().format(_dateTime),
               style: TextStyle(
@@ -156,7 +223,7 @@ class _UserProfileState extends State<UserProfile> {
 
           const SizedBox(height: 10),
 
-          if (_countries.isEmpty)
+           if (_countries.isEmpty)
             const Center(child: CircularProgressIndicator())
           else
             Padding(
@@ -278,12 +345,12 @@ class _UserProfileState extends State<UserProfile> {
           else
             Container(),
 
-          const SizedBox(height: 10),
+            const SizedBox(height: 10),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 120.0),
             child: MaterialButton(
-              onPressed: saveUserDetails,
+              onPressed: isUsernameTaken ? null : saveUserDetails,
               color: Color.fromARGB(255, 140, 206, 142),
               child: const Padding(
                 padding: EdgeInsets.all(14.0),
@@ -296,3 +363,10 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 }
+
+
+
+
+
+
+
