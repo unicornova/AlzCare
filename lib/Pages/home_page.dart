@@ -1,4 +1,5 @@
 import 'package:alzcare/Pages/rating.dart';
+import 'package:alzcare/Pages/user_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -30,16 +31,20 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
   var container;
-    if (currentPage == DrawerSections.dashboard) {
-      container = DashboardPage();
+
+    if (currentPage == DrawerSections.user_profile) {
+      container = const UserProfile();
+    } 
+    else if (currentPage == DrawerSections.dashboard) {
+      container = const DashboardPage();
     } else if (currentPage == DrawerSections.detect_alzheimer) {
-      container = Home();
+      container = const Home();
     } else if (currentPage == DrawerSections.know_alzheimer) {
       container = KnowAlzPage();
     }else if (currentPage == DrawerSections.rating) {
-      container = RatingPage();
+      container = const RatingPage();
     }else if (currentPage == DrawerSections.map) {
-      container = MapPage();
+      container = const MapPage();
     }else if (currentPage == DrawerSections.signout) {
       container = signOutUser();
     }
@@ -73,17 +78,19 @@ Widget MyDrawerList() {
       ),
       child: Column(
         children: [
-          menuItem(1, "Dashboard", Icons.dashboard_outlined,
+          menuItem(1, "Profile", Icons.person_2,
+              currentPage == DrawerSections.user_profile ? true : false),
+          menuItem(2, "Dashboard", Icons.dashboard_outlined,
               currentPage == DrawerSections.dashboard ? true : false),
-          menuItem(2, "Detect Alzheimer", Icons.people_alt_outlined,
+          menuItem(3, "Detect Alzheimer", Icons.search,
               currentPage == DrawerSections.detect_alzheimer ? true : false),
-          menuItem(3, "Know Alzheimer", Icons.event,
+          menuItem(4, "Know Alzheimer", Icons.event,
               currentPage == DrawerSections.know_alzheimer ? true : false),
-          menuItem(4, "Rate this App", Icons.star,
+          menuItem(5, "Rate this App", Icons.star,
               currentPage == DrawerSections.know_alzheimer ? true : false),
-          menuItem(5, "Map", Icons.map,
+          menuItem(6, "Map", Icons.map,
               currentPage == DrawerSections.map ? true : false),
-          menuItem(6, "Logout", Icons.logout,
+          menuItem(7, "Logout", Icons.logout,
               currentPage == DrawerSections.signout ? true : false),
         ],
       )
@@ -98,17 +105,19 @@ Widget menuItem(int id, String title, IconData icon, bool selected){
       Navigator.pop(context);
           setState(() {
             if (id == 1) {
+              currentPage = DrawerSections.user_profile;}
+            else if (id == 2) {
               currentPage = DrawerSections.dashboard;
-            } else if (id == 2) {
-              currentPage = DrawerSections.detect_alzheimer;
             } else if (id == 3) {
+              currentPage = DrawerSections.detect_alzheimer;
+            } else if (id == 4) {
               currentPage = DrawerSections.know_alzheimer;
             }
-            else if (id == 4) {
+            else if (id == 5) {
               currentPage = DrawerSections.rating;
-            } else if (id == 5) {
+            } else if (id == 6) {
               currentPage = DrawerSections.map;
-            }else if (id == 6) {
+            }else if (id == 7) {
               currentPage = DrawerSections.signout;
             }
           },); 
@@ -141,6 +150,8 @@ Widget menuItem(int id, String title, IconData icon, bool selected){
 }
 
 enum DrawerSections{
+  // ignore: constant_identifier_names
+  user_profile,
   dashboard,
   // ignore: constant_identifier_names
   detect_alzheimer,
