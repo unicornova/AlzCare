@@ -1,3 +1,4 @@
+
 import 'package:alzcare/Pages/rating.dart';
 import 'package:alzcare/Pages/user_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  
   var currentPage = DrawerSections.dashboard;
+ 
+
 
   signOutUser(){
     FirebaseAuth.instance.signOut();
