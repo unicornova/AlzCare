@@ -1,5 +1,7 @@
+// ignore_for_file: unnecessary_null_comparison
 
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,9 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  PickedFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
 
   String url =
       "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json";
@@ -60,6 +65,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final phoneNumberController = TextEditingController();
   DateTime _dateTime = DateTime.now();
   bool isUsernameTaken = false;
+  
 
   void _showDatePicker() {
     showDatePicker(
@@ -110,14 +116,78 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     }
   }
 
+  Widget bottomsheet(){
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: 20.0
+      ),
+      child: Column(
+        children: [
+          Text("Choose Profile Photo",
+          style: TextStyle(fontSize: 20.0),),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            ElevatedButton.icon(
+              onPressed:(){takePhoto(ImageSource.camera);},
+              icon: Icon(Icons.camera), 
+              label: Text("Camera",)),
+             const SizedBox(width: 15,),
+            ElevatedButton.icon(
+              onPressed: () {takePhoto(ImageSource.gallery);},
+              icon: Icon(Icons.image), 
+              label: Text("Gallery",))
+          ],)
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async{
+    // ignore: deprecated_member_use
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 241, 216, 230),
+      backgroundColor: Color.fromARGB(255, 241, 216, 230),
       body: ListView(
         children: [
           const SizedBox(height: 35),
-          const Icon(Icons.person, size: 72),
+          Center(
+            child: Stack(
+              children: [
+                CircleAvatar(
+                  radius: 62.0,
+                  backgroundImage: _imageFile == null 
+                  ? AssetImage('assets/person.png') as ImageProvider
+                  : FileImage(File(_imageFile!.path)),
+                ),
+                Positioned(
+                  bottom: 20.0,
+                  right: 20.0,
+                  child: InkWell(
+                    onTap: (){
+                      showModalBottomSheet(context: context, builder: ((builder)=> bottomsheet()));
+                    },
+                    child: Icon(
+                      Icons.add_photo_alternate_rounded,
+                      color: Colors.amber[200],
+                      size: 35,
+                    ),
+                  ))
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
           Text(currentuser.email!, textAlign: TextAlign.center),
           const SizedBox(height: 25),
           Text(
@@ -419,7 +489,6 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 
 
-
-
+//In this flutter code, the image disappears if the user changes page or closes the app. Modify the code so that the image is saved in firebase storage when user hits the save button and doesn't disappear upon closing the app.
 
 

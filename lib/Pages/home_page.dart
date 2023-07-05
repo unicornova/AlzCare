@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       container = const UserProfile();
     } 
     else if (currentPage == DrawerSections.dashboard) {
-      container = const DashboardPage();
+      container =  DashboardPage();
     } else if (currentPage == DrawerSections.detect_alzheimer) {
       container = const Home();
     } else if (currentPage == DrawerSections.know_alzheimer) {
