@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +22,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   PickedFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
+  late String? _imageURL = null;
 
   String url =
       "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json";
@@ -57,6 +58,21 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     getWorldData();
+
+    // Load the profile image URL from Firebase Storage and display it in the CircleAvatar
+      final uid = currentuser.uid;
+      FirebaseStorage.instance
+          .ref('profile_images/$uid.jpg')
+          .getDownloadURL()
+          .then((url) {
+        setState(() {
+          _imageFile = null;
+          _imageURL = url;
+        });
+      }).catchError((error) {
+        print('Error loading profile image: $error');
+      });
+
     super.initState();
   }
 
@@ -99,6 +115,15 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
     if (!existingUsernames.docs.isNotEmpty) {
       final uid = currentuser.uid;
+
+      // Upload the profile image to Firebase Storage
+      if (_imageFile != null) {
+        var storageRef =
+            //firebase_storage.FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
+            FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
+        var file = File(_imageFile!.path);
+        await storageRef.putFile(file);
+      }
 
       // Create a new document in the "user details" collection
       await FirebaseFirestore.instance.collection('user details').doc(uid).set({
@@ -155,6 +180,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     });
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,9 +194,11 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
               children: [
                 CircleAvatar(
                   radius: 62.0,
-                  backgroundImage: _imageFile == null 
-                  ? AssetImage('assets/person.png') as ImageProvider
-                  : FileImage(File(_imageFile!.path)),
+                  backgroundImage: _imageFile == null
+                        ? (_imageURL != null
+                            ? NetworkImage(_imageURL!) // Display the profile image URL if available
+                            : AssetImage('assets/person.png') as ImageProvider)
+                        : FileImage(File(_imageFile!.path)),
                 ),
                 Positioned(
                   bottom: 20.0,
