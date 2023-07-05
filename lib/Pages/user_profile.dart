@@ -98,48 +98,103 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     });
   }
 
-  Future<void> saveUserDetails() async {
-    final username = textController.text;
-    final phoneNumber = phoneNumberController.text;
 
-    setState(() {
+  Future<void> updateUserDetails() async {
+  final username = textController.text;
+  final phoneNumber = phoneNumberController.text;
+
+  setState(() {
     this.phoneNumber = phoneNumber;
   });
 
-    // Check if the username already exists
-    final QuerySnapshot existingUsernames = await FirebaseFirestore.instance
-        .collection('user details')
-        .where('username', isEqualTo: username)
-        .limit(1)
-        .get();
+  final uid = currentuser.uid;
 
-    if (!existingUsernames.docs.isNotEmpty) {
-      final uid = currentuser.uid;
+  // Upload the profile image to Firebase Storage if a new image is selected
+  if (_imageFile != null) {
+    var storageRef =
+        FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
+    var file = File(_imageFile!.path);
+    await storageRef.putFile(file);
 
-      // Upload the profile image to Firebase Storage
-      if (_imageFile != null) {
-        var storageRef =
-            //firebase_storage.FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
-            FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
-        var file = File(_imageFile!.path);
-        await storageRef.putFile(file);
-      }
+    // Get the download URL of the uploaded image
+    var downloadURL = await storageRef.getDownloadURL();
 
-      // Create a new document in the "user details" collection
-      await FirebaseFirestore.instance.collection('user details').doc(uid).set({
+    // Update the imageURL variable
+    setState(() {
+      _imageURL = downloadURL;
+    });
+  }
+
+  // Update the document in the "user details" collection
+  await FirebaseFirestore.instance.collection('user details').doc(uid).update({
+    'username': username,
+    'birthdate': _dateTime,
+    'country': country,
+    'state': state,
+    'city': city,
+    'phoneNumber': phoneNumber,
+    'imageURL': _imageURL,
+  });
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('User details updated')),
+  );
+}
+
+
+  Future<void> saveUserDetails() async {
+  final username = textController.text;
+  final phoneNumber = phoneNumberController.text;
+
+  setState(() {
+    this.phoneNumber = phoneNumber;
+  });
+
+  final uid = currentuser.uid;
+
+  // Check if the user already exists
+  final DocumentSnapshot userDetailsSnapshot =
+      await FirebaseFirestore.instance.collection('user details').doc(uid).get();
+
+  if (userDetailsSnapshot.exists) {
+    // User already exists, call the update method
+    await updateUserDetails();
+  } else {
+    // User does not exist, call the set method
+
+    // Upload the profile image to Firebase Storage if selected
+    if (_imageFile != null) {
+      var storageRef =
+          FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
+      var file = File(_imageFile!.path);
+      await storageRef.putFile(file);
+
+      // Get the download URL of the uploaded image
+      var downloadURL = await storageRef.getDownloadURL();
+
+      // Update the imageURL variable
+      setState(() {
+        _imageURL = downloadURL;
+      });
+    }
+
+    // Create a new document in the "user details" collection
+    await FirebaseFirestore.instance.collection('user details').doc(uid).set({
       'username': username,
       'birthdate': _dateTime,
       'country': country,
       'state': state,
       'city': city,
-      'phoneNumber': phoneNumber, // Assign the phoneNumber value correctly
+      'phoneNumber': phoneNumber,
+      'imageURL': _imageURL,
     });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User details saved')),
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User details saved')),
+    );
   }
+}
+
 
   Widget bottomsheet(){
     return Container(
@@ -151,9 +206,9 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
       ),
       child: Column(
         children: [
-          Text("Choose Profile Photo",
+          const Text("Choose Profile Photo",
           style: TextStyle(fontSize: 20.0),),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
