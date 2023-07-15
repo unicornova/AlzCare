@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import '../components/graphql_cont.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -388,6 +389,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
           ),
 
           const SizedBox(height: 10),
+
+          const Continents(),
 
            if (_countries.isEmpty)
             const Center(child: CircularProgressIndicator())
