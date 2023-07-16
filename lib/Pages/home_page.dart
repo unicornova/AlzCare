@@ -1,4 +1,5 @@
 
+import 'package:alzcare/Pages/invoice.dart';
 import 'package:alzcare/Pages/rating.dart';
 import 'package:alzcare/Pages/user_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,10 +55,13 @@ class _HomePageState extends State<HomePage> {
     }else if (currentPage == DrawerSections.signout) {
       container = signOutUser();
     }
+    else if(currentPage == DrawerSections.pdf){
+      container = Pdf();
+    }
 
     return Scaffold(
       
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
 
       body: container,
@@ -96,8 +100,11 @@ Widget MyDrawerList() {
               currentPage == DrawerSections.know_alzheimer ? true : false),
           menuItem(6, "Map", Icons.map,
               currentPage == DrawerSections.map ? true : false),
-          menuItem(7, "Logout", Icons.logout,
+          menuItem(7, "Invoice", Icons.pages, 
+              currentPage == DrawerSections.pdf ? true : false),
+          menuItem(8, "Logout", Icons.logout,
               currentPage == DrawerSections.signout ? true : false),
+          
         ],
       )
     );
@@ -123,8 +130,11 @@ Widget menuItem(int id, String title, IconData icon, bool selected){
               currentPage = DrawerSections.rating;
             } else if (id == 6) {
               currentPage = DrawerSections.map;
-            }else if (id == 7) {
+            }else if (id == 8) {
               currentPage = DrawerSections.signout;
+            }
+            else if(id == 7){
+              currentPage = DrawerSections.pdf;
             }
           },); 
           },
@@ -165,5 +175,6 @@ enum DrawerSections{
   know_alzheimer,
   rating,
   map,
-  signout
+  pdf,
+  signout,
 }

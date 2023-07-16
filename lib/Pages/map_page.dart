@@ -76,6 +76,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+    backgroundColor: Color.fromARGB(255, 241, 216, 230),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +84,8 @@ class _MapPageState extends State<MapPage> {
           Text(locationmsg, textAlign: TextAlign.center,style: TextStyle(fontSize: 20),),
           const SizedBox(height: 20,),
 
-        ElevatedButton(onPressed:(){
+      GestureDetector(
+      onTap: (){
           getCurrentLocation().then((value) {
             lat = '${value.latitude}';
             long = '${value.longitude}';
@@ -94,16 +96,31 @@ class _MapPageState extends State<MapPage> {
 
           _livelocation();
           });
-          }, 
-          child: const Text('Get user location')
-          ),
+          },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(horizontal: 30.0),
+        decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
+        child:  Center(child: Text('Get User Location',
+        style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
+        )),
+      ),
+    ),
 
-          const SizedBox(height: 10,),
-
-          ElevatedButton(onPressed: (){
+    const SizedBox(height: 10,),
+    GestureDetector(
+      onTap: (){
             openMap(lat,long);
-
-          }, child:const Text('Open google map') )
+          },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(horizontal: 30.0),
+        decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
+        child:  Center(child: Text('Open Google Map',
+        style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
+        )),
+      ),
+    )
 
       ]),
     ),

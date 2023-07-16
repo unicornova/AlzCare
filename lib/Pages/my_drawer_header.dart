@@ -30,7 +30,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
           ),
          
           const Text("AlzCare!",
-          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontSize: 25,),)
+          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontSize: 25,fontWeight: FontWeight.w500),)
         ]
         ),
     );

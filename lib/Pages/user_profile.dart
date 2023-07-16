@@ -358,8 +358,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
             padding: const EdgeInsets.only(left: 33.0),
             child: Text(
               'Birthdate: ' + DateFormat.yMMMEd().format(_dateTime),
-              style: TextStyle(
-                color: Colors.grey[800],
+              style: const TextStyle(
+                color: Colors.black,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
@@ -372,7 +372,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
               onPressed: () {
                 _showDatePicker();
               },
-              color: const Color.fromARGB(255, 203, 121, 218).withOpacity(0.5),
+              //color: const Color.fromARGB(255, 203, 121, 218).withOpacity(0.5),
+              color: Color.fromARGB(255, 218, 160, 228).withOpacity(0.5),
               child: const Padding(
                 padding: EdgeInsets.all(14.0),
                 child: Text('Choose Birthdate'),
@@ -388,9 +389,10 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
             ),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 7),
 
           const Continents(),
+          const SizedBox(height: 5),
 
            if (_countries.isEmpty)
             const Center(child: CircularProgressIndicator())
@@ -561,13 +563,14 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
             padding: const EdgeInsets.symmetric(horizontal: 120.0),
             child: MaterialButton(
               onPressed: isUsernameTaken ? null : () async {await saveUserDetails();},
-              color: Color.fromARGB(255, 140, 206, 142),
-              child: const Padding(
+              color: Color.fromARGB(255, 0, 0, 0),
+              child: Padding(
                 padding: EdgeInsets.all(14.0),
-                child: Text('Save'),
+                child: Text('Save',style: TextStyle(color: Colors.blueGrey.shade100),),
               ),
             ),
           ),
+           const SizedBox(height: 15),
         ],
       ),
     );
