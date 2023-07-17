@@ -1,5 +1,6 @@
 
 import 'package:alzcare/components/comment_button.dart';
+import 'package:alzcare/components/delete_button.dart';
 import 'package:alzcare/components/like_button.dart';
 import 'package:alzcare/helper/helper_method.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -157,7 +158,29 @@ else if (isdisLiked) {
   }
 
 
+  void deletePost(){
+    showDialog(
+      context: context, 
+      builder: (context)=> AlertDialog(
+         title: const Text('Delete Post'),
+         content: const Text('Are you sure you want to delete this post?'),
+         actions: [
+          TextButton(onPressed: ()=> Navigator.pop(context), child: const Text("Cancel")),
+          TextButton(onPressed: () async{
 
+            final commentDocs = await FirebaseFirestore.instance.collection("user posts").doc(widget.postID).collection("comments").get();
+
+            for(var doc in commentDocs.docs){
+              await FirebaseFirestore.instance.collection("comments").doc(doc.id).delete();
+            }
+
+            FirebaseFirestore.instance.collection("user posts").doc(widget.postID).delete().then((value) => print("post deleted")).catchError((error)=>print("failed to delete post"));
+            Navigator.pop(context);
+          }, 
+          child: const Text("Delete"))
+         ],
+    ));
+  }
 
 
 
@@ -233,6 +256,18 @@ else if (isdisLiked) {
                     color: Color.fromARGB(255, 117, 116, 116)),),
                     ],
                   ),
+
+                  const SizedBox(width: 10),
+                if(widget.user == user.email)
+                Column(
+                  children: [
+                    DeleteButton(onTap: deletePost),
+                    const SizedBox(height: 5),
+                    const Text('Delete',
+                     style: TextStyle(
+                    color: Color.fromARGB(255, 117, 116, 116)),),
+                  ],
+                ),
                   
                 ],
         
