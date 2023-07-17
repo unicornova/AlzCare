@@ -1,4 +1,5 @@
 
+import 'package:alzcare/Pages/first_detection.dart';
 import 'package:alzcare/Pages/invoice.dart';
 import 'package:alzcare/Pages/rating.dart';
 import 'package:alzcare/Pages/user_profile.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'my_drawer_header.dart';
 
 import 'dashboard.dart';
-import 'detection.dart';
 import 'know_alz.dart';
 
 import 'map_page.dart';
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     else if (currentPage == DrawerSections.dashboard) {
       container =  DashboardPage();
     } else if (currentPage == DrawerSections.detect_alzheimer) {
-      container = const Home();
+      container = const FirstDetection();
     } else if (currentPage == DrawerSections.know_alzheimer) {
       container = KnowAlzPage();
     }else if (currentPage == DrawerSections.rating) {

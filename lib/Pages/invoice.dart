@@ -15,20 +15,32 @@ class Pdf extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 241, 216, 230),
-      body: Center(
-        child: GestureDetector(
-          onTap: createPDF,
-          child: Container(
-            height: 50,
-            width: 300,
-            padding: const EdgeInsets.all(15),
-            margin: const EdgeInsets.symmetric(horizontal: 30.0),
-            decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
-            child:  Center(child: Text('Generate PDF',
-            style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
-            )),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: 180,
+            width: 180,
+            padding: const EdgeInsets.all(10),
+            child: Image.asset('assets/invoice.png'),
           ),
-        ),
+          const SizedBox(height: 50,),
+          const Text('       Generate a PDF\n containing your details',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+          const SizedBox(height: 70,),
+          GestureDetector(
+            onTap: createPDF,
+            child: Container(
+              height: 50,
+              width: 350,
+              padding: const EdgeInsets.all(15),
+              margin: const EdgeInsets.symmetric(horizontal: 30.0),
+              decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
+              child:  Center(child: Text('Generate PDF',
+              style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
+              )),
+            ),
+          ),
+        ],
       ),
     );
   }

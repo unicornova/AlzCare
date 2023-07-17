@@ -11,16 +11,16 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 160, 108, 170),
+      color: Color.fromARGB(255, 229, 176, 240),
       width: double.infinity,
-      height: 200,
+      height: 230,
       padding: const EdgeInsets.only(top: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 10),
-            height: 70,
+            height: 85,
             decoration: const BoxDecoration( 
             shape: BoxShape.circle,
             image: DecorationImage(

@@ -1,6 +1,7 @@
 
 
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 List <CameraDescription>? cameras;
@@ -70,12 +71,17 @@ class _HomeState extends State<Home> {
       labels: 'assets/labels.txt'
       );
   }
+  
+  signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(
-        //title: Text('Alzheimer Stages Detection')),
+      backgroundColor: Color.fromARGB(255, 241, 216, 230),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
       body: Column(children: [
         Padding(padding: EdgeInsets.all(20),
         child: Container(

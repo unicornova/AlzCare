@@ -81,6 +81,15 @@ class _MapPageState extends State<MapPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
+        Container(
+            height: 250,
+            width: 250,
+            padding: const EdgeInsets.all(10),
+            child: Image.asset('assets/map.png'),
+          ),
+          const SizedBox(height: 50,),
+
           Text(locationmsg, textAlign: TextAlign.center,style: TextStyle(fontSize: 20),),
           const SizedBox(height: 20,),
 
