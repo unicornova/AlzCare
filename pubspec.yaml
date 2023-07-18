@@ -58,6 +58,8 @@ dependencies:
   path_provider: ^2.0.15
   open_file: ^3.3.2
   syncfusion_flutter_pdf: ^22.1.38
+  flutter_inappwebview: ^5.7.2+3
+  sass: 1.60.0
 
 dev_dependencies:
   flutter_test:

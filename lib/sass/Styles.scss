@@ -1,0 +1,39 @@
+$loader-size: 50px;
+$loader-color: #007bff;
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f8f8f8;
+}
+
+.loading-container {
+  position: relative;
+  width: $loader-size;
+  height: $loader-size;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid #e9e9e9;
+  border-top: 4px solid $loader-color;
+  border-radius: 50%;
+  width: $loader-size;
+  height: $loader-size;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

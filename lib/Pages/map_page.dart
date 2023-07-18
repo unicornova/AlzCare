@@ -90,7 +90,7 @@ class _MapPageState extends State<MapPage> {
           ),
           const SizedBox(height: 50,),
 
-          Text(locationmsg, textAlign: TextAlign.center,style: TextStyle(fontSize: 20),),
+          Text(locationmsg, textAlign: TextAlign.center,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
           const SizedBox(height: 20,),
 
       GestureDetector(
