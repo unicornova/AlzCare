@@ -36,11 +36,25 @@ class _DashboardPageState extends State<DashboardPage> {
       });
     }
   }
+  signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 241, 216, 230),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: const Text('Home Page'),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
+      backgroundColor: const Color.fromARGB(255, 241, 216, 230),
       body: Center(
         child: Column(
           children: [

@@ -66,10 +66,23 @@ class _RatingPageState extends State<RatingPage> {
       });
     }
   }
-
+signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Color.fromARGB(255, 241, 216, 230),
+    appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: const Text('Rate the App'),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
+    backgroundColor: const Color.fromARGB(255, 241, 216, 230),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

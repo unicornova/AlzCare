@@ -1,5 +1,6 @@
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -74,9 +75,24 @@ class _MapPageState extends State<MapPage> {
     : throw 'could not launch $googleURL';
   }
 
+   signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Color.fromARGB(255, 241, 216, 230),
+    appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: const Text('Map'),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
+    backgroundColor: const Color.fromARGB(255, 241, 216, 230),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

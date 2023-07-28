@@ -3,7 +3,7 @@ import 'package:alzcare/Pages/first_detection.dart';
 import 'package:alzcare/Pages/invoice.dart';
 import 'package:alzcare/Pages/rating.dart';
 import 'package:alzcare/Pages/user_profile.dart';
-import 'package:alzcare/sass/sass.dart';
+import 'package:alzcare/Pages/sass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
-        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
+      /*appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),*/
 
       body: container,
 

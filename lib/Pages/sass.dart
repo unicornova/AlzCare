@@ -87,7 +87,17 @@ body {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: Text('Dashboard'),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
       body: Column(
         children: [
           const SizedBox(height: 20,),

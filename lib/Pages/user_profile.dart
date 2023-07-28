@@ -80,8 +80,12 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final currentuser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
   final phoneNumberController = TextEditingController();
+  final nameController = TextEditingController();
+
   DateTime _dateTime = DateTime.now();
   bool isUsernameTaken = false;
+
+
   
 
   void _showDatePicker() {
@@ -103,6 +107,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Future<void> updateUserDetails() async {
   final username = textController.text;
   final phoneNumber = phoneNumberController.text;
+  final name = nameController.text;
 
   setState(() {
     this.phoneNumber = phoneNumber;
@@ -133,6 +138,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     'country': country,
     'state': state,
     'city': city,
+    'name':name,
     'phoneNumber': phoneNumber,
     'imageURL': _imageURL,
   });
@@ -142,11 +148,12 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   );
 }
 
+ 
 
   Future<void> saveUserDetails() async {
   final username = textController.text;
   final phoneNumber = phoneNumberController.text;
-
+  final name = nameController.text;
   setState(() {
     this.phoneNumber = phoneNumber;
   });
@@ -186,6 +193,7 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
       'country': country,
       'state': state,
       'city': city,
+      'name':name,
       'phoneNumber': phoneNumber,
       'imageURL': _imageURL,
     });
@@ -235,12 +243,26 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
       _imageFile = pickedFile;
     });
   }
+   signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
 
   
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: Text('Profile'),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 241, 216, 230),
       body: ListView(
         children: [
@@ -286,6 +308,38 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
           ),
           const SizedBox(height: 10),
 
+          const Padding(
+            padding: EdgeInsets.only(left: 33.0),
+            child: Text(
+              'Name (Required)',
+              style: TextStyle(fontWeight: FontWeight.bold),
+              
+            ),
+          ),
+          const SizedBox(height: 10),
+
+
+          Padding(
+           padding:  const EdgeInsets.symmetric(horizontal: 30.0),
+           child: TextField(
+           controller: nameController,
+           obscureText: false,
+           decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade200)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade600)
+                    ),
+                    fillColor: Colors.blueGrey.shade100,
+                    filled: true,
+                    hintText: 'Type your name',
+                    hintStyle: TextStyle(color: Colors.grey[600])
+           ),         
+         ),
+         ),
+         const SizedBox(height: 10),
+
 
           const Padding(
             padding: EdgeInsets.only(left: 33.0),
@@ -296,6 +350,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
           ),
           const SizedBox(height: 10),
 
+
+        
 
 
          Padding(
@@ -562,7 +618,20 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 120.0),
             child: MaterialButton(
-              onPressed: isUsernameTaken ? null : () async {await saveUserDetails();},
+              onPressed: () async {
+                  if (nameController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Name Field is Empty')),
+                      );
+                  }else if(isUsernameTaken){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Username is already taken')),
+                      );
+                  }
+                   else {
+                    await saveUserDetails();
+                  }
+                },
               color: Color.fromARGB(255, 0, 0, 0),
               child: Padding(
                 padding: EdgeInsets.all(14.0),

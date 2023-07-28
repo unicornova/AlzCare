@@ -5,15 +5,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:flutter/material.dart';
 
+import 'datagrid.dart';
+
 
 
 
 class Pdf extends StatelessWidget {
   const Pdf({super.key});
 
+  signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: Text('Invoice'),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 241, 216, 230),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -36,6 +53,28 @@ class Pdf extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 30.0),
               decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
               child:  Center(child: Text('Generate PDF',
+              style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
+              )),
+            ),
+          ),
+          const SizedBox(height: 10,),
+          GestureDetector(
+            onTap: (){
+              // Navigate to another page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Datagrid(),
+                ),
+              );
+            },
+            child: Container(
+              height: 50,
+              width: 350,
+              padding: const EdgeInsets.all(15),
+              margin: const EdgeInsets.symmetric(horizontal: 30.0),
+              decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.circular(6)),
+              child:  Center(child: Text('Datagrid',
               style: TextStyle(color: Colors.blueGrey.shade100, fontSize: 16),
               )),
             ),

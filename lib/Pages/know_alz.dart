@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -36,11 +37,25 @@ void dispose(){
   
   super.dispose();
 }
+signOutUser(){
+    FirebaseAuth.instance.signOut();
+  }
 
   Widget build(BuildContext context) =>
   YoutubePlayerBuilder(
     player: YoutubePlayer(controller: controller), 
     builder: (context,player)=>Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: Text("Know Alzheimer's"),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 241, 216, 230),
       body: Center(
         child: Column(
