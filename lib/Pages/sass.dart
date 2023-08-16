@@ -87,12 +87,13 @@ body {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 241, 216, 230),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {
             Scaffold.of(context).openDrawer();
           },
@@ -114,9 +115,10 @@ body {
                     width: 210,
                     height: 100,
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 101, 78, 124),
+                      color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(50),
+                        topLeft: Radius.circular(50)
                       ),
                     ),
                   ),
@@ -160,9 +162,10 @@ body {
                     height: 100,
                     decoration: const BoxDecoration(
                       //color: Color.fromARGB(255, 105, 7, 73),
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(50),
+                        topRight: Radius.circular(50)
                       ),
                     ),
                   ),
@@ -204,9 +207,10 @@ body {
                     height: 100,
                     decoration: const BoxDecoration(
                       //color: Color.fromARGB(255, 105, 7, 73),
-                      color: Color.fromARGB(255, 101, 78, 124),
+                      color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(50),
+                        topLeft: Radius.circular(50)
                       ),
                     ),
                   ),
@@ -251,6 +255,7 @@ body {
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(50),
+                        topRight: Radius.circular(50)
                       ),
                     ),
                   ),
@@ -292,9 +297,10 @@ body {
                     height: 100,
                     decoration: const BoxDecoration(
                       //color: Color.fromARGB(255, 105, 7, 73),
-                      color: Color.fromARGB(255, 101, 78, 124),
+                      color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(50),
+                        topLeft: Radius.circular(50)
                       ),
                     ),
                   ),
@@ -339,6 +345,7 @@ body {
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
                         bottomRight: Radius.circular(50),
+                        topRight: Radius.circular(50)
                       ),
                     ),
                   ),

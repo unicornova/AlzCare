@@ -33,7 +33,7 @@ class _FirstDetectionState extends State<FirstDetection> {
   }
 
   detectImage(File img) async{
-    var prediction = await Tflite.runModelOnImage(path: img.path,numResults:4,threshold: 0.6,imageMean: 127.5,imageStd: 127.5 );
+    var prediction = await Tflite.runModelOnImage(path: img.path,numResults:4,threshold: 0.6 );
     setState(() {
       _loading = false;
       predictions = prediction!;
@@ -73,17 +73,17 @@ loadimageCamera() async{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 145, 46, 165),
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
-        title: Text("Detect Alzheimer's"),
+        title: const Text("Detect Alzheimer's"),
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {
             Scaffold.of(context).openDrawer();
           },
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 241, 216, 230),
+      backgroundColor: const Color.fromARGB(255, 241, 216, 230),
       body: Column(
        
         children: [
@@ -95,7 +95,7 @@ loadimageCamera() async{
             child: Image.asset('assets/brain3.png'),
           ),
           const SizedBox(height: 5,),
-          Text('Machine Learning\n        Classifier', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+          const Text('Machine Learning\n        Classifier', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
           const SizedBox(height: 25,),
           GestureDetector(
           onTap: (){
@@ -154,7 +154,7 @@ loadimageCamera() async{
             ),
             const SizedBox(height: 10,),
             // ignore: dead_code
-            _loading==false
+            _loading==false && predictions.isNotEmpty
             // ignore: dead_code
             ? Container(
               child: Column(

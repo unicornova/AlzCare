@@ -80,16 +80,25 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 241, 216, 230),
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
-        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 145, 46, 165),
+        actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))],
+        title: const Text("Real Time Detection"),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
       body: Column(children: [
         Padding(padding: EdgeInsets.all(20),
         child: Container(
           height: MediaQuery.of(context).size.height*0.7,
           width: MediaQuery.of(context).size.width,
-          child: !cameraController!.value.isInitialized?
-          Container():
-          AspectRatio(aspectRatio: cameraController!.value.aspectRatio,
+          child: !cameraController!.value.isInitialized
+          ?Container()
+          :AspectRatio(aspectRatio: cameraController!.value.aspectRatio,
           child: CameraPreview(cameraController!),),
         ),),
         Text(output,

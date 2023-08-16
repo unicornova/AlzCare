@@ -25,11 +25,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   
   var currentPage = DrawerSections.sass;
  
-
+ 
 
   signOutUser(){
     FirebaseAuth.instance.signOut();
@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
       
       /*appBar: AppBar(backgroundColor: Color.fromARGB(255, 145, 46, 165),title: Center(child: Text('Alzcare')),
         actions: [IconButton(onPressed: signOutUser, icon: const Icon(Icons.logout))]),*/
