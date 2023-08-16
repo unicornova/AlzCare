@@ -110,7 +110,7 @@ signOutUser(){
               ),
               const SizedBox(height: 32),
               Text(
-                'Average Rating: $meanRating',
+                'Average Rating: ${meanRating.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

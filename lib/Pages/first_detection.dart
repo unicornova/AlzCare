@@ -163,7 +163,7 @@ loadimageCamera() async{
                   Container(height: 180, width: 180, child: Image.file(_image),),
                   const SizedBox(height: 10,),
                   Text(predictions[0]['label'].toString(),style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
-                  Text('Confidence: '+predictions[0]['confidence'].toString(),style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w400)),
+                  Text('Confidence: '+predictions[0]['confidence'].toStringAsFixed(3),style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w400)),
                 ],
                 
               ),
